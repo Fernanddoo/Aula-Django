@@ -1,0 +1,5 @@
+# Tudo que não devemos levar para 
+.env
+__pycache__
+migrations
+db.sqlite3
