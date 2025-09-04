@@ -1,0 +1,34 @@
+{% extends 'loja/base.html' %}
+
+{% block title %}{% if form.instance.pk %}Editar Produto{% else %}Adicionar Produto{% endif %}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">
+            {% if form.instance.pk %}Editar Produto{% else %}Adicionar Produto{% endif %}
+        </h2>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="{{ form.nome.id_for_label }}" class="form-label">Nome</label>
+                <input type="text" name="{{ form.nome.name }}" id="{{ form.nome.id_for_label }}" class="form-control" value="{{ form.nome.value|default_if_none:'' }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="{{ form.preco.id_for_label }}" class="form-label">Preço</label>
+                <input type="number" step="0.01" name="{{ form.preco.name }}" id="{{ form.preco.id_for_label }}" class="form-control" value="{{ form.preco.value|default_if_none:'' }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="{{ form.descricao.id_for_label }}" class="form-label">Descrição</label>
+                <textarea name="{{ form.descricao.name }}" id="{{ form.descricao.id_for_label }}" class="form-control" rows="3">{{ form.descricao.value|default_if_none:'' }}</textarea>
+            </div>
+
+            <button type="submit" class="btn btn-success">Salvar</button>
+            <a href="{% url 'lista_produtos' %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
