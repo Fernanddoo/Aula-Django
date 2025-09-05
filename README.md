@@ -8,6 +8,12 @@
 
 O ambiente virtual vai ter uma cópia do python e todas as bibliotecas que você instalar.
 
+## Comando para alterar politica:
+
+```bash
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
 ## Ativando a sua venv
 
 - Se for Windows:
