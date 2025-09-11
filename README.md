@@ -538,6 +538,176 @@ Principais mudanças:
 
 - Os botões foram estilizados para refletir as ações (vermelho para confirmar a exclusão, cinza para cancelar).
 
-E com isso, caros, criamos um e-commerce em Django!!!!
+E com isso, caros, criamos um e-commerce em Django!!!! (Super básico)
 
-E agora...???
+## Continuando onde paramos (provavelmente vai dar erro de versão das bibliotecas)
+
+### Importante!
+
+- Provavelmente a nossa VENV deve ter sido apagado, então, criem novamente antes de seguir adiante!!!
+
+Vamos utilizar o git para clonar o repositório e continuar de onde paramos n última aula, usando o seguinte comando:
+
+```bash
+    git clone https://github.com/Fernanddoo/Aula-Django.git
+```
+
+E depois acessem o diretório do projeto:
+
+```bash
+    cd .\aulaDjango\
+```
+
+Depois de estar no diretório correto, há apenas uns comandos que restam para estarmos com o projeto rodando novamente
+- Execute os seguintes comando:
+
+```bash
+    pip install -r  requirements.txt   
+```
+
+- E depois:
+
+```bash
+    python manage.py migrate
+```
+
+E após isso feito, rodamos o projeto novamente!
+
+```bash
+    python manage.py runserver
+```
+
+## Vamos atualizar ainda mais nossa loja
+
+### Passo 1
+
+Vamos também adicionar imagens para nossos produtos, para termos mais visual em nossa página de e-commerce
+
+Vamos começar atualizando o modelo dos produtos, parece ser armazenado o link das imagens que pegaremos da web:
+
+O arquivo **loja/models.py** vai ficar assim:
+
+```python
+from django.db import models
+
+class Produto(models.Model):
+    nome = models.CharField(max_length=100)
+    preco = models.DecimalField(max_digits=10, decimal_places=2)
+    descricao = models.TextField(blank=True, null=True)
+    imagem_url = models.URLField(max_length=200, blank=True, null=True)
+
+    def __str__(self):
+        return self.nome
+```
+
+### Importante!!!
+
+Como nós alteramos nosso modelo do produto, lembrem!!! Precisamos passar novamente essa mudança para o banco de dados entender o que foi alterado no nosso modelo produto
+
+- Vamos executar novamente os dois comandos:
+
+```bash
+    python manage.py makemigrations
+    python manage.py migrate
+```
+
+### Passo 2
+
+Também precisamos atualizar nosso forms, que é onde nós inserimos as informações do produto que cadastramos.
+
+- Vamos copiar o seguinte código:
+
+```python
+    # loja/forms.py
+from django import forms
+from .models import Produto
+
+class ProdutoForm(forms.ModelForm):
+    class Meta:
+        model = Produto
+        fields = ['nome', 'preco', 'descricao', 'imagem_url']
+```
+
+Notem que até o momento, tanto no model, quanto no forms, apenas adicionamos um campo a mais, isso se dá, pois o que estamos fazendo é apenas atribuir mais uma variável dentre as outras no nosso modelo Produto.
+
+### Passo 3
+
+Agora teremos que renderizar essa nova alteração em nossas telas, aqui estarão a maior parte das nossas mudanças.
+
+- **loja/templates/loja/lista_produtos.html**
+
+```html
+<thead class="table-dark">
+    <tr>
+        <th>Imagem</th> <th>Nome</th>
+        <th>Preço</th>
+        <th>Descrição</th>
+        <th>Ações</th>
+    </tr>
+</thead>
+```
+
+Nesta parte do arquivo, vamos inserimos a tag <th>Imagem<th> para onde irá aparecer nossa imagem.
+
+E agora dentro do loop, outra alteração:
+
+```html
+<tbody>
+    {% for produto in produtos %}
+    <tr>
+        <td>
+            {% if produto.imagem_url %}
+                <img src="{{ produto.imagem_url }}" alt="{{ produto.nome }}" style="width: 100px; height: auto; border-radius: 8px;">
+            {% else %}
+                <span class="text-muted">Sem Imagem</span>
+            {% endif %}
+        </td>
+        <td>{{ produto.nome }}</td>
+        <td>R$ {{ produto.preco }}</td>
+        <td>{{ produto.descricao|default:"-" }}</td>
+        <td>
+            <a href="{% url 'editar_produto' pk=produto.pk %}" class="btn btn-secondary btn-sm">Editar</a>
+            <a href="{% url 'excluir_produto' pk=produto.pk %}" class="btn btn-danger btn-sm">Excluir</a>
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+```
+
+Com isso, nossa renderização dos produtos está completa, só falta agora, nossa tela do forms também estar de acordo com as mudanças
+
+- Vamos colocar o seguinte código:
+
+```html
+<div class="mb-3">
+    <label for="{{ form.imagem_url.id_for_label }}" class="form-label">URL da Imagem</label>
+    <input type="url" name="{{ form.imagem_url.name }}" id="{{ form.imagem_url.id_for_label }}" class="form-control" value="{{ form.imagem_url.value|default_if_none:'' }}">
+</div>
+```
+
+Os inserimos junto dos outros campos dentro da tag <form> no arquivo html
+
+E com isso, podemos rodar novamente o projeto e verificar nossas mudanças!!!
+
+E com isso, nosso e-commerce vai crescendo mais e mais... Mas o que falta??? 
+
+- Login/Cadastro de usuários
+- Carrinho de compras
+- Search bar
+
+Entre outros mais, mas... Hora do Desafio!
+
+## Dê-em a sua cara para o projeto!
+
+Vamos reforçar o que aprendemos com html e css e tentar aplicar isso ao projeto do django também!
+
+O projeto está utilizando a estilização do [Bootstrap](https://getbootstrap.com.br/docs/4.1/getting-started/introduction)
+
+Clicando no link, vocês tem acesso a documentação do Bootstrap e utilizar a estilização própria dele. (Ela é mais difícil de personalizar, mas possuí muitas opções prontas para utilizar)
+
+### OU
+
+Vocês podem remover o bootstrap e trabalhar com o html e css puro!
+
+
+
