@@ -559,6 +559,17 @@ E depois acessem o diretório do projeto:
 ```
 
 Depois de estar no diretório correto, há apenas uns comandos que restam para estarmos com o projeto rodando novamente
+Mas antes de rodar o requirements, vamos abri-lo e colar isto:
+
+```txt
+asgiref==3.7.2
+Django==2.2.1
+dotenv==0.9.9
+python-dotenv==0.21.1
+sqlparse==0.4.4
+tzdata==2025.2
+```
+
 - Execute os seguintes comando:
 
 ```bash
