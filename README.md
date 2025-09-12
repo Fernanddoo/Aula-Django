@@ -19,6 +19,14 @@ O ambiente virtual vai ter uma cópia do python e todas as bibliotecas que você
     source venv/bin/activate
 ```
 
+Caso de erro de execução de scripts:
+
+```bash
+Set-ExecutionPolicy RemoteSigned
+```
+
+Com isso o computador poderá rodar os scripts
+
 ## Criando o projeto django
 
 - Vamos conferir a instalação do django:
